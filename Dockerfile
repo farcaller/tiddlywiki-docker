@@ -16,5 +16,7 @@ EXPOSE 8080
 VOLUME /tiddlywiki
 WORKDIR /tiddlywiki
 
+USER 1000
+
 ENTRYPOINT ["/sbin/tini", "--", "tiddlywiki"]
 CMD ["--help"]
