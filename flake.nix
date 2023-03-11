@@ -11,11 +11,7 @@
       dockerImage = pkgs.dockerTools.buildImage {
         name = "ghcr.io/farcaller/tiddlywiki-docker";
         tag = "latest";
-
-        config = {
-          Entrypoint = [ "${tiddlywiki}/bin/tiddlywiki" ];
-          WorkingDir = "/tiddlywiki";
-        };
+        config.Entrypoint = [ "${tiddlywiki}/bin/tiddlywiki" ];
       };
       version = tiddlywiki.version;
     }
