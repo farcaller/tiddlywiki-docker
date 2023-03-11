@@ -12,6 +12,7 @@
         name = "ghcr.io/farcaller/tiddlywiki-docker";
         tag = "latest";
         config.Entrypoint = [ "${tiddlywiki}/bin/tiddlywiki" ];
+        config.Labels."org.opencontainers.image.source" = "https://github.com/farcaller/tiddlywiki-docker";
       };
       version = tiddlywiki.version;
     }
