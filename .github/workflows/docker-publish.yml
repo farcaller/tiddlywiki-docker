@@ -7,8 +7,37 @@ on:
     branches: [ "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
+  update-nix-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: fregante/setup-git-user@v2
+      
+      - name: Install Nix
+        uses: cachix/install-nix-action@v20
+        with:
+          extra_nix_config: 'experimental-features = nix-command flakes'
+          nix_path: nixpkgs=channel:nixos-unstable
+          
+      - name: Update lockfiles
+        run: |
+          set -euxo pipefail
+          
+          nix flake update
+          
+          if [[ -n $(git status -s) ]]; then
+            git add .
+            git commit -am 'Update the nix lockfiles'
+            git push
+          fi
   build:
+    needs: update-nix-deps
+
     runs-on: ubuntu-latest
 
     steps:
