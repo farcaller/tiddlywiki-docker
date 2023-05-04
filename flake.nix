@@ -5,13 +5,15 @@
   outputs = { self, nixpkgs, flake-utils }: flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      
+      tini = pkgs.tini;
       tiddlywiki = pkgs.nodePackages.tiddlywiki;
     in
     {
       dockerImage = pkgs.dockerTools.buildImage {
         name = "ghcr.io/farcaller/tiddlywiki-docker";
         tag = "latest";
-        config.Entrypoint = [ "${tiddlywiki}/bin/tiddlywiki" ];
+        config.Entrypoint = [ "${tini}/bin/tini" "--" "${tiddlywiki}/bin/tiddlywiki" ];
         config.Labels."org.opencontainers.image.source" = "https://github.com/farcaller/tiddlywiki-docker";
       };
       version = tiddlywiki.version;
