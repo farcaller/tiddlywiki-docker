@@ -13,8 +13,11 @@
       dockerImage = pkgs.dockerTools.buildImage {
         name = "ghcr.io/farcaller/tiddlywiki-docker";
         tag = "latest";
-        config.Entrypoint = [ "${tini}/bin/tini" "--" "${tiddlywiki}/bin/tiddlywiki" ];
-        config.Labels."org.opencontainers.image.source" = "https://github.com/farcaller/tiddlywiki-docker";
+        config = {
+          Entrypoint = [ "${tini}/bin/tini" "--" "${tiddlywiki}/bin/tiddlywiki" ];
+          Labels."org.opencontainers.image.source" = "https://github.com/farcaller/tiddlywiki-docker";
+          WorkingDir = "/tiddlywiki";
+        };
       };
       version = tiddlywiki.version;
     }
